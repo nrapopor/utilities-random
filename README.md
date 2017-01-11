@@ -119,7 +119,7 @@ To override the files packaged with the tool by default add the files to the cla
 This is also possible to override the various settings on the fly as part of the script. Be aware that the overrides have a **global**
 (meaning server wide impact).
 
-Here is the configuration file that can be overridden on the classpath just make sure its to add it to the class path **before** the
+Here is the configuration file **utilities-random.properties** that can be overridden on the classpath just make sure its to add it to the class path **before** the
 utilities-random-\<VERSION\>.jar
 
 ```properties
