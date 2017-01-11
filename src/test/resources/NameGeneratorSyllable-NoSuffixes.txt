@@ -1,0 +1,11 @@
+#Prefixes
+-a +c
+-al +c
+-an +c
+-ba +c
+
+#Middle
+abi
+abe
+abo
+abu

@@ -1,17 +1,23 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.parasoft.sa</groupId>
-	<artifactId>ctputilities-random</artifactId>
+	<groupId>com.parasoft.sa.ctp</groupId>
+	<artifactId>utilities-random</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-	<name>ctputilities-random</name>
+	<name>utilities-random</name>
 	<description>Utilities to provide random string and number generation</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.version>3.6.0</maven.compiler.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven-assembly-plugin.version>3.0.0</maven-assembly-plugin.version>
+		<maven-dependency-plugin.version>3.0.0</maven-dependency-plugin.version>
 		<commons-lang3.version>3.5</commons-lang3.version>
-
+		<slf4j.version>1.7.12</slf4j.version>
+		<log4j.version>2.4</log4j.version>
+		<junit.version>4.12</junit.version>
+		<parasoft-api.version>9.10.0</parasoft-api.version>
 	</properties>
 
 	<dependencies>
@@ -20,22 +26,115 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>${commons-lang3.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j-impl</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-jcl</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.parasoft</groupId>
+			<artifactId>parasoft-api</artifactId>
+			<version>${parasoft-api.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<build>
-		<resources>
+<!-- 		<resources>
 			<resource>
 				<directory>src/main/lib</directory>
 				<includes>
-					<include>*.ja</include>
+					<include>*.jar</include>
 				</includes>
 				<targetPath>${project.build.directory}/lib</targetPath>
 			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
 		</resources>
-
+ -->
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.5.1</version>
+				<version>${maven.compiler.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>${maven-dependency-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/lib</outputDirectory>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>false</overWriteSnapshots>
+							<overWriteIfNewer>true</overWriteIfNewer>
+							<excludeTypes>pom</excludeTypes>
+							<excludeScope>test</excludeScope>
+							<includeScope>compile</includeScope>
+							<excludeArtifactIds>parasoft-api</excludeArtifactIds>
+							<!-- <excludeArtifactIds>jgroups,log4j</excludeArtifactIds> <excludeGroupIds>org.springframework,junit,aopalliance,commons-logging,commons-lang,org.slf4j</excludeGroupIds> -->
+							<!-- <includeGroupIds>${actional.group},${documentum.group}</includeGroupIds> -->
+						</configuration>
+					</execution>
+					<!-- <execution> <id>copy-non-provided-dependencies</id> <phase>compile</phase>
+						<goals> <goal>copy-dependencies</goal> </goals> <configuration> <outputDirectory>${project.build.directory}/dependencies</outputDirectory>
+						<overWriteReleases>false</overWriteReleases> <overWriteSnapshots>false</overWriteSnapshots>
+						<overWriteIfNewer>true</overWriteIfNewer> <excludeTypes>pom</excludeTypes>
+						<excludeScope>provided</excludeScope> <excludeGroupIds>org.springframework,junit,aopalliance,commons-logging</excludeGroupIds>
+						</configuration> </execution> -->
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>${maven-assembly-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>make-assembly</id> <!-- this is used for inheritance merges -->
+						<phase>package</phase> <!-- bind to the packaging phase -->
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<id>distribution</id>
+					<filters>
+						<filter>src/assembly/filter.properties</filter>
+					</filters>
+					<descriptorRefs>
+						<descriptorRef>project</descriptorRef>
+					</descriptorRefs>
+					<descriptors>
+						<descriptor>src/assembly/bin-distribution.xml</descriptor>
+					</descriptors>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

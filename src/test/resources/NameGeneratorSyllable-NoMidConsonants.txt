@@ -1,0 +1,23 @@
+#Prefixes
+-a +c
+-al +c
+-an +c
+-ba +c
+
+#Middle
+abi
+abe
+abo
+abu
+
+#Suffixes
++tus
++lus
++lius
++nus
++es
++ius -c
++cus
++tor
++cio
++tin

@@ -1,0 +1,17 @@
+#Prefixes
+-a +c
+-al +c
+-an +c
+-ba +c
+
+#Suffixes
++tus
++lus
++lius
++nus
++es
++ius -c
++cus
++tor
++cio
++tin
